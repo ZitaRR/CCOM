@@ -5,10 +5,16 @@ using UnityEngine;
 public class ASTAR : MonoBehaviour
 {
     private static WorldGeneration world;
+    private static int size;
 
     private void Awake()
     {
         world = GetComponent<WorldGeneration>();
+    }
+
+    private void Start()
+    {
+        size = WorldGeneration.Size;
     }
 
     public static Stack<Node> FindPath(Vector3 start, Vector3 target)
@@ -66,12 +72,12 @@ public class ASTAR : MonoBehaviour
         return path;
     }
 
-    private static List<Node> GetAdjacentNodes(Node node)
+    public static List<Node> GetAdjacentNodes(Node node)
     {
         var list = new List<Node>();
         if (node.X == 0)
             list.Add(world.Map[node.Z, node.X + 1]);
-        else if (node.X == world.Size - 1)
+        else if (node.X == size - 1)
             list.Add(world.Map[node.Z, node.X - 1]);
         else
         {
@@ -81,13 +87,54 @@ public class ASTAR : MonoBehaviour
     
         if (node.Z == 0)
             list.Add(world.Map[node.Z + 1, node.X]);
-        else if (node.Z == world.Size - 1)
+        else if (node.Z == size - 1)
             list.Add(world.Map[node.Z - 1, node.X]);
         else
         {
             list.Add(world.Map[node.Z + 1, node.X]);
             list.Add(world.Map[node.Z - 1, node.X]);
         }
+
+        //absolute cancer
+        //should use for loop but im a dumb dumb 
+        //also, i might not end up using this bit at all
+
+        //if (node.X == 0 && node.Z == 0)
+        //    list.Add(world.Map[node.Z + 1, node.X + 1]);
+        //else if (node.X == 0 && node.Z == size - 1)
+        //    list.Add(world.Map[node.Z - 1, node.X + 1]);
+        //else if (node.X == size - 1 && node.Z == 0)
+        //    list.Add(world.Map[node.Z + 1, node.X - 1]);
+        //else if (node.X == size - 1 && node.Z == size - 1)
+        //    list.Add(world.Map[node.Z - 1, node.X - 1]);
+        //else if (node.X == 0 && node.Z < size - 1)
+        //{
+        //    list.Add(world.Map[node.Z + 1, node.X + 1]);
+        //    list.Add(world.Map[node.Z - 1, node.X + 1]);
+        //}
+        //else if (node.X == size - 1 && node.Z < size - 1)
+        //{
+        //    list.Add(world.Map[node.Z + 1, node.X - 1]);
+        //    list.Add(world.Map[node.Z - 1, node.X - 1]);
+        //}
+        //else if (node.X < size - 1 && node.Z == 0)
+        //{
+        //    list.Add(world.Map[node.Z + 1, node.X + 1]);
+        //    list.Add(world.Map[node.Z + 1, node.X - 1]);
+        //}
+        //else if (node.X < size - 1 && node.Z == size - 1)
+        //{
+        //    list.Add(world.Map[node.Z - 1, node.X + 1]);
+        //    list.Add(world.Map[node.Z - 1, node.X - 1]);
+        //}
+        //else if ((node.X > 0 && node.X < size - 1) &&
+        //         (node.Z > 0 && node.Z < size - 1))
+        //{
+        //    list.Add(world.Map[node.Z + 1, node.X + 1]);
+        //    list.Add(world.Map[node.Z + 1, node.X - 1]);
+        //    list.Add(world.Map[node.Z - 1, node.X + 1]);
+        //    list.Add(world.Map[node.Z - 1, node.X - 1]);
+        //}
     
         return list;
     }

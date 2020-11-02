@@ -31,6 +31,13 @@ public class Node
         Walkable = walkable;
         Weight = weight;
         node = Object.Instantiate(obj, GetVector(), Quaternion.identity);
+        node.GetComponent<MeshRenderer>().material.color = Color.white;
+        if (!Walkable)
+        {
+            ChangeColour(Color.red);
+            var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.transform.position = GetVector();
+        }
     }
 
     public void ChangeColour(Color colour)

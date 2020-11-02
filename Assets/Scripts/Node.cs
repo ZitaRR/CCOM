@@ -30,14 +30,17 @@ public class Node
         Z = z;
         Walkable = walkable;
         Weight = weight;
-        node = Object.Instantiate(obj, new Vector3(X, .5f, Z), Quaternion.identity);
+        node = Object.Instantiate(obj, GetVector(), Quaternion.identity);
     }
 
-    public void ChangeColour()
+    public void ChangeColour(Color colour)
     {
         var material = node.GetComponent<MeshRenderer>().material;
-        material.color = Color.cyan;
+        material.color = colour;
     }
+
+    public Vector3 GetVector()
+        => new Vector3(X, .5f, Z);
 
     public override string ToString()
         => $"X: {X}, Z: {Z}";

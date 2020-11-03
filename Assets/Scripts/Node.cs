@@ -22,22 +22,27 @@ public class Node
     public bool Walkable { get; set; }
 
     private GameObject node;
+    private Color normalColor = Color.white;
 
-    public Node(GameObject obj, int x, int z, bool walkable, int weight = 1)
+    public Node(GameObject node, int x, int z, bool walkable, int weight = 1)
     {
         Parent = null;
+        this.node = node;
         X = x;
         Z = z;
         Walkable = walkable;
         Weight = weight;
-        node = Object.Instantiate(obj, GetVector(), Quaternion.identity);
-        node.GetComponent<MeshRenderer>().material.color = Color.white;
+
+        if (this.node is null)
+            return;
+
+        var vector = GetVector();
         if (!Walkable)
-        {
-            ChangeColour(Color.red);
-            var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            cube.transform.position = GetVector();
-        }
+            normalColor = Color.red;
+        else vector.y = 0f;
+
+        this.node = Object.Instantiate(node, vector, Quaternion.identity);
+        ChangeColour();
     }
 
     public void ChangeColour(Color colour)
@@ -45,6 +50,9 @@ public class Node
         var material = node.GetComponent<MeshRenderer>().material;
         material.color = colour;
     }
+
+    public void ChangeColour()
+        => ChangeColour(normalColor);
 
     public Vector3 GetVector()
         => new Vector3(X, .5f, Z);
